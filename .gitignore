@@ -1,0 +1,12 @@
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.env
+*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+.npm
+.eslintcache
+.node_repl_history
