@@ -12,6 +12,7 @@ const signToken = (id) => {
   });
 };
 
+// TODO: Use authorization header instead of cookies for jwt
 const createAndSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
@@ -22,6 +23,7 @@ const createAndSendToken = (user, statusCode, res) => {
   };
   if (process.env.ENV === "production") cookieOptions.secure = true;
 
+  res.setHeader("Authorization", `Bearer ${token}`);
   res.cookie("jwt", token, cookieOptions);
 
   // Remove password from input
@@ -49,12 +51,12 @@ export const signup = catchAsync(async (req, res, next) => {
 });
 
 export const login = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
-  if (!email || !password) {
+  if (!username || !password) {
     return next(new AppError("Please provide email and password", 400));
   }
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ username }).select("+password");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect email or password!", 401));
@@ -70,6 +72,8 @@ export const protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   if (!token) {

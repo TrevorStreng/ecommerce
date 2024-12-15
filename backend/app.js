@@ -1,12 +1,14 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 
 import AppError from "./utils/appError.js";
-import userRouter from "./routes/userRouter.js";
-import productRouter from "./routes/productRouter.js";
+import userRouter from "./routes/userRoutes.js";
+import productRouter from "./routes/productRoutes.js";
 
 const app = express();
 
 app.use(express.json({ limit: "10kb" }));
+app.use(cookieParser());
 
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
