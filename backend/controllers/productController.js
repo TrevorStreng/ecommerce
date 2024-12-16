@@ -7,9 +7,7 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     results: products.length,
-    data: {
-      products,
-    },
+    products,
   });
 });
 
@@ -34,5 +32,13 @@ export const updateProduct = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: product,
+  });
+});
+
+export const deleteProduct = catchAsync(async (req, res, next) => {
+  await Product.findByIdAndDelete(req.params.id);
+
+  res.status(204).json({
+    status: "success",
   });
 });

@@ -9,6 +9,9 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please provide a price for the product."],
   },
+  image: {
+    type: String,
+  },
 });
 
 const Product = mongoose.model("Product", productSchema);
