@@ -1,9 +1,37 @@
+import mongoose from "mongoose";
 import Product from "../models/productModel.js";
 import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 
-export const getAllProducts = catchAsync(async (req, res, next) => {
-  const products = await Product.find();
+export const getProducts = catchAsync(async (req, res, next) => {
+  const { ids, category, minPrice, maxPrice } = req.query;
+
+  const filters = {};
+
+  if (ids) {
+    const idArray = ids
+      .split(",")
+      .map((id) => {
+        return mongoose.Types.ObjectId.isValid(id)
+          ? mongoose.Types.ObjectId.createFromHexString(id)
+          : null;
+      })
+      .filter(Boolean);
+
+    if (idArray.length) {
+      filters._id = { $in: idArray };
+    }
+  }
+  if (category) {
+    filters.category = category;
+  }
+  if (minPrice || maxPrice) {
+    filters.price = {};
+    if (minPrice) filters.price.$gte = Number(minPrice);
+    if (maxPrice) filters.price.$lte = Number(maxPrice);
+  }
+
+  const products = await Product.find(filters);
   res.status(200).json({
     status: "success",
     results: products.length,

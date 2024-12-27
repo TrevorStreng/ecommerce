@@ -1,11 +1,10 @@
-<script setup></script>
+<script setup>
+const displayCart = () => {};
+</script>
 
 <template>
-  <div class="flex h-12 w-1/3 justify-evenly place-items-center">
-    <div class="">Home</div>
-    <div>Shirts</div>
-    <div>Shorts</div>
-  </div>
+  <nav class="flex h-12 w-1/3 justify-evenly place-items-center">
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/cart">Cart</RouterLink>
+  </nav>
 </template>
-
-<!-- <style scoped></style> -->

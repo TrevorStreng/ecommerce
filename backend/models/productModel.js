@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { set } from "mongoose";
 
 const productSchema = new mongoose.Schema({
   name: {
@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: [true, "Please provide a price for the product."],
+    // set: (val) => parseFloat(val.toFixed(2)),
   },
   image: {
     type: String,

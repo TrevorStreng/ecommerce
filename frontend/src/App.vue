@@ -1,30 +1,18 @@
 <script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-import TheWelcome from "./components/TheWelcome.vue";
 import Navbar from "./components/Navbar.vue";
-import HomeContent from "./components/HomeContent.vue";
+import HomeContent from "./components/HomePage.vue";
+import TopAdd from "./components/TopAdd.vue";
 </script>
 
 <template>
-  <header>
-    <!-- <img
-      alt="Vue logo"
-      class="logo"
-      src="./assets/logo.svg"
-      width="125"
-      height="125"
-    />
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div> -->
-    <div class="flex w-screen justify-center fixed">
-      <Navbar />
-      <HomeContent />
-    </div>
+  <header class="flex justify-center">
+    <Navbar />
   </header>
 
-  <main>
-    <!-- <TheWelcome /> -->
+  <main class="flex w-screen justify-center">
+    <div class="flex flex-col w-full items-center">
+      <RouterView></RouterView>
+    </div>
   </main>
 </template>
 

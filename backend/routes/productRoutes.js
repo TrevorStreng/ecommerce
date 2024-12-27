@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getAllProducts,
+  getProducts,
   createProduct,
   updateProduct,
   deleteProduct,
@@ -9,7 +9,7 @@ import { protect, restrictTo } from "../controllers/authController.js";
 
 const productRouter = express.Router();
 
-productRouter.route("/").get(getAllProducts);
+productRouter.route("/").get(getProducts);
 
 productRouter.use(protect);
 productRouter.route("/").post(restrictTo("admin"), createProduct);
