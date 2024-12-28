@@ -2,6 +2,8 @@
 import axios from "axios";
 import { onMounted, ref } from "vue";
 
+import TopAdd from "./TopAdd.vue";
+
   const products = ref([]);
 
   onMounted(async () => {
@@ -26,10 +28,13 @@ import { onMounted, ref } from "vue";
 </script>
 
 <template>
-  <div class="flex w-2/3 justify-center">
-    <ul class="grid grid-cols-3 gap-3">
+  <div>
+    <TopAdd/>
+  </div>
+  <div class="flex justify-center">
+    <ul class="grid md:grid-cols-3 gap-3">
       <li v-for="product in products" :key="product._id" class="flex flex-col justify-center items-center">
-        <img :src="product.image" class="w-52"></img>
+        <img :src="product.image" class="w-3/4"></img>
         <div class="flex w-full justify-evenly">
           <p class="text-center">{{ product.name }}</p>
           <p class="text-end">${{ product.price }}</p>

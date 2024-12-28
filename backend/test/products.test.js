@@ -17,6 +17,13 @@ describe("GET /api/products", () => {
   });
 });
 
+describe("GET /api/products?minPrice=2", () => {
+  it("should return all products over $2.00", async () => {
+    const res = await request(app).get("/api/products?minPrice=2");
+    expect(res.statusCode).toBe(200);
+  });
+});
+
 afterEach(async () => {
   await mongoose.connection.close();
 });

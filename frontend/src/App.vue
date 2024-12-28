@@ -1,7 +1,6 @@
 <script setup>
 import Navbar from "./components/Navbar.vue";
 import HomeContent from "./components/HomePage.vue";
-import TopAdd from "./components/TopAdd.vue";
 </script>
 
 <template>
