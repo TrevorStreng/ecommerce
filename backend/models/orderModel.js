@@ -5,12 +5,28 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide an email"],
   },
-  products: {
-    type: Array,
-    required: [true, "Please add items to cart"],
-  },
+  products: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+        required: true,
+      },
+    },
+    {
+      quantity: {
+        type: Number,
+        required: true,
+        min: [1, "Quantity must be at least 1"],
+      },
+    },
+  ],
   address: {
     type: String,
     required: [true, "Please provide an address"],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
