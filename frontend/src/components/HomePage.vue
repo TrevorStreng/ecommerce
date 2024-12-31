@@ -28,9 +28,7 @@ import TopAdd from "./TopAdd.vue";
 </script>
 
 <template>
-  <div>
-    <TopAdd/>
-  </div>
+  <TopAdd/>
   <div class="flex justify-center">
     <ul class="grid md:grid-cols-3 gap-3">
       <li v-for="product in products" :key="product._id" class="flex flex-col justify-center items-center">

@@ -1,2 +1,36 @@
 import mongoose from "mongoose";
-import order from "../models/orderModel.js";
+import Order from "../models/orderModel.js";
+import catchAsync from "../utils/catchAsync.js";
+
+export const getOrders = catchAsync(async (req, res, next) => {
+  const { ids, email } = req.query;
+
+  const filters = {};
+
+  if (ids) {
+    const idArray = ids
+      .split(",")
+      .map((id) => {
+        return mongoose.Types.ObjectId.isValid(id)
+          ? mongoose.Types.ObjectId.createFromHexString(id)
+          : null;
+      })
+      .filter(Boolean);
+
+    if (idArray.length) {
+      filters._id = { $in: idArray };
+    }
+  }
+  if (email) {
+    filters.email = email;
+  }
+});
+
+export const createOrder = catchAsync(async (req, res, next) => {
+  const newOrder = await Order.create(req.body);
+
+  res.status(201).json({
+    status: "success",
+    newOrder,
+  });
+});

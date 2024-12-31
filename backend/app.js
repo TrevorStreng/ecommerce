@@ -5,6 +5,7 @@ import cors from "cors";
 import AppError from "./utils/appError.js";
 import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors());
 
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
+app.use("/api/orders", orderRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
