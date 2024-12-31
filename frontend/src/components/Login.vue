@@ -5,14 +5,13 @@ import axios from "axios";
 const email = ref("");
 const password = ref("");
 
-const login = async (email, password) => {
+const login = async () => {
   try {
     const data = {
       email: email.value,
       password: password.value,
     };
-    console.log(data);
-    await axios.post("http://localhost:3000/api/users", data);
+    await axios.post("http://localhost:3000/api/users/login", data);
   } catch (err) {
     console.error(err);
   }
