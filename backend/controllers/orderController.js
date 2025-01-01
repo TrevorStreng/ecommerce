@@ -3,6 +3,7 @@ import Order from "../models/orderModel.js";
 import catchAsync from "../utils/catchAsync.js";
 
 export const getOrders = catchAsync(async (req, res, next) => {
+  console.log("orders getting");
   const { ids, email } = req.query;
 
   const filters = {};
@@ -24,6 +25,13 @@ export const getOrders = catchAsync(async (req, res, next) => {
   if (email) {
     filters.email = email;
   }
+
+  const orders = await Order.find(filters);
+  res.status(200).json({
+    status: "success",
+    results: orders.length,
+    orders,
+  });
 });
 
 export const createOrder = catchAsync(async (req, res, next) => {

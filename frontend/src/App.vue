@@ -7,8 +7,8 @@ import Navbar from "./components/Navbar.vue";
     <Navbar />
   </header>
 
-  <main class="flex w-screen justify-center">
-    <div class="flex flex-col w-full items-center">
+  <main class="flex h-[95vh] justify-center">
+    <div class="flex flex-col items-center w-full">
       <RouterView></RouterView>
     </div>
   </main>
