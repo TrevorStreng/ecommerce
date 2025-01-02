@@ -19,9 +19,27 @@ const orderSchema = new mongoose.Schema({
       },
     },
   ],
-  address: {
-    type: String,
-    required: [true, "Please provide an address"],
+  shippingInfo: {
+    name: {
+      type: String,
+      required: [true, "Please provide a name for shipping"],
+    },
+    street: {
+      type: String,
+      required: [true, "Please provide a street for shipping"],
+    },
+    city: {
+      type: String,
+      required: [true, "Please provide a city for shipping"],
+    },
+    state: {
+      type: String,
+      required: [true, "Please provide a state for shipping"],
+    },
+    zipcode: {
+      type: String,
+      required: [true, "Please provide a zipcode for shipping"],
+    },
   },
   createdAt: {
     type: Date,

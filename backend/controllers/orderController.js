@@ -3,7 +3,6 @@ import Order from "../models/orderModel.js";
 import catchAsync from "../utils/catchAsync.js";
 
 export const getOrders = catchAsync(async (req, res, next) => {
-  console.log("orders getting");
   const { ids, email } = req.query;
 
   const filters = {};
