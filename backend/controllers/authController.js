@@ -1,4 +1,3 @@
-import crypto, { sign } from "crypto";
 import jwt from "jsonwebtoken";
 
 import User from "../models/userModel.js";
