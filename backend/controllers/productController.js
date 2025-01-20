@@ -4,7 +4,7 @@ import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 
 export const getProducts = catchAsync(async (req, res, next) => {
-  const { ids, category, minPrice, maxPrice } = req.query;
+  const { ids, category, minPrice, maxPrice, sale, gender } = req.query;
 
   const filters = {};
 
@@ -29,6 +29,12 @@ export const getProducts = catchAsync(async (req, res, next) => {
     filters.price = {};
     if (minPrice) filters.price.$gte = Number(minPrice);
     if (maxPrice) filters.price.$lte = Number(maxPrice);
+  }
+  if (sale) {
+    filters.sale = sale;
+  }
+  if (gender) {
+    filters.gender = gender;
   }
 
   const products = await Product.find(filters);

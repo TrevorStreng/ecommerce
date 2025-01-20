@@ -13,6 +13,18 @@ const productSchema = new mongoose.Schema({
   image: {
     type: String,
   },
+  category: {
+    type: String,
+    required: [true, "Please assign a category."],
+  },
+  sale: {
+    type: Boolean,
+    default: false,
+  },
+  gender: {
+    type: String,
+    required: [true, "Please specify a gender."],
+  },
 });
 
 const Product = mongoose.model("Product", productSchema);
