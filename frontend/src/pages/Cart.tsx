@@ -4,24 +4,35 @@ import { CartItemCard } from "../components/CartItem";
 import { ShoppingBag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { CartItem } from "../types/type";
+import { updateCartItems } from "../../utils/CartUtil";
 
 export const Cart = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const updateQuantity = (index: number, change: number) => {
-    //! update this in the localstorage as well
-    setCartItems((items) =>
-      items.map((item, i) =>
+    setCartItems((items) => {
+      const updatedQuantity = items.map((item, i) =>
         i === index
           ? {
               ...item,
               quantity: Math.max(1, item.quantity + change),
             }
           : item
-      )
-    );
+      );
+      updateCartItems(updatedQuantity);
+      return updatedQuantity;
+    });
   };
   const removeItem = (index: number) => {
-    setCartItems((items) => items.filter((_, i) => i !== index));
+    try {
+      console.log("removing item");
+      setCartItems((items) => {
+        const updatedCart = items.filter((_, i) => i !== index);
+        updateCartItems(updatedCart);
+        return updatedCart;
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,

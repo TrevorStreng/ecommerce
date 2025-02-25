@@ -11,3 +11,7 @@ export const addItemToCart = (cartItem: CartItem) => {
   localStorage.setItem("cart", JSON.stringify(cartItems));
   console.log("hereerreer");
 };
+
+export const updateCartItems = (cartItems: CartItem[]) => {
+  localStorage.setItem("cart", JSON.stringify(cartItems));
+};
