@@ -1,5 +1,6 @@
 import React from "react";
 import { Product } from "../types/type";
+import { addItemToCart } from "../../utils/CartUtil";
 interface ProductCardProps {
   product: Product;
 }
@@ -13,9 +14,24 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           className="w-full h-[400px] object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-          <button className="w-full bg-white text-black py-2 rounded-full hover:bg-gray-100 transition">
-            Quick View
+          <button
+            className="w-full bg-white text-black py-2 rounded-full hover:bg-gray-100 transition"
+            onClick={() => {
+              addItemToCart({
+                _id: product._id,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                size: "sm",
+                quantity: 1,
+              });
+            }}
+          >
+            Add To Cart
           </button>
+          {/* <button className="w-full bg-white text-black py-2 rounded-full hover:bg-gray-100 transition">
+            Quick View
+          </button> */}
         </div>
       </div>
       <h3 className="font-medium text-lg">{product.name}</h3>

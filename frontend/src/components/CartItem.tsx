@@ -1,17 +1,12 @@
 import React from "react";
 import { Minus, Plus, X } from "lucide-react";
+import { CartItem } from "../types/type";
 interface CartItemProps {
-  product: {
-    name: string;
-    price: number;
-    image: string;
-    size?: string;
-    quantity: number;
-  };
+  product: CartItem;
   onUpdateQuantity: (change: number) => void;
   onRemove: () => void;
 }
-export const CartItem = ({
+export const CartItemCard = ({
   product,
   onUpdateQuantity,
   onRemove,

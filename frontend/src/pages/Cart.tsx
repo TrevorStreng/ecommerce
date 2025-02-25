@@ -1,28 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar";
-import { CartItem } from "../components/CartItem";
+import { CartItemCard } from "../components/CartItem";
 import { ShoppingBag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { CartItem } from "../types/type";
+
 export const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      name: "Cotton Blend T-Shirt",
-      price: 29.99,
-      image:
-        "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
-      size: "M",
-      quantity: 1,
-    },
-    {
-      name: "Slim Fit Jeans",
-      price: 79.99,
-      image:
-        "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
-      size: "32",
-      quantity: 1,
-    },
-  ]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const updateQuantity = (index: number, change: number) => {
+    //! update this in the localstorage as well
     setCartItems((items) =>
       items.map((item, i) =>
         i === index
@@ -41,6 +27,21 @@ export const Cart = () => {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
+  useEffect(() => {
+    const getCartItems = () => {
+      let cart = localStorage.getItem("cart");
+      if (cart) {
+        try {
+          let cartItems: CartItem[] = JSON.parse(cart);
+          setCartItems(cartItems);
+        } catch (err) {
+          console.error("Error parsing cart items.", err);
+        }
+      }
+    };
+    getCartItems();
+  }, []);
   const shipping = 5.99;
   const total = subtotal + shipping;
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ export const Cart = () => {
         <div className="lg:grid lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-7">
             {cartItems.map((item, index) => (
-              <CartItem
+              <CartItemCard
                 key={index}
                 product={item}
                 onUpdateQuantity={(change) => updateQuantity(index, change)}
