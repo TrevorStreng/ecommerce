@@ -24,7 +24,6 @@ export const Cart = () => {
   };
   const removeItem = (index: number) => {
     try {
-      console.log("removing item");
       setCartItems((items) => {
         const updatedCart = items.filter((_, i) => i !== index);
         updateCartItems(updatedCart);
@@ -38,6 +37,10 @@ export const Cart = () => {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
+  const checkout = () => {
+    console.log("checking out!");
+  };
 
   useEffect(() => {
     const getCartItems = () => {
@@ -112,7 +115,10 @@ export const Cart = () => {
                   <span>${total.toFixed(2)}</span>
                 </div>
               </div>
-              <button className="w-full bg-black text-white mt-6 px-6 py-3 rounded-full hover:bg-gray-800 transition">
+              <button
+                className="w-full bg-black text-white mt-6 px-6 py-3 rounded-full hover:bg-gray-800 transition"
+                onClick={checkout}
+              >
                 Proceed to Checkout
               </button>
               <button

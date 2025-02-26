@@ -9,7 +9,6 @@ export const addItemToCart = (cartItem: CartItem) => {
   cartItems.push(cartItem);
 
   localStorage.setItem("cart", JSON.stringify(cartItems));
-  console.log("hereerreer");
 };
 
 export const updateCartItems = (cartItems: CartItem[]) => {
