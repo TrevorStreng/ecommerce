@@ -37,7 +37,12 @@ export const getProducts = catchAsync(async (req, res, next) => {
     filters.gender = gender;
   }
 
-  const products = await Product.find(filters);
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  const startIndex = (page - 1) * limit;
+
+  const products = await Product.find(filters).skip(startIndex).limit(limit);
   res.status(200).json({
     status: "success",
     results: products.length,

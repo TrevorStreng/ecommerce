@@ -25,7 +25,12 @@ export const getOrders = catchAsync(async (req, res, next) => {
     filters.email = email;
   }
 
-  const orders = await Order.find(filters);
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  const startIndex = (page - 1) * limit;
+
+  const orders = await Order.find(filters).skip(startIndex).limit(limit);
   res.status(200).json({
     status: "success",
     results: orders.length,
