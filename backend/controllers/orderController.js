@@ -33,7 +33,10 @@ export const getOrders = catchAsync(async (req, res, next) => {
   const orders = await Order.find(filters).skip(startIndex).limit(limit);
   res.status(200).json({
     status: "success",
-    results: orders.length,
+    totalResults: orders.length,
+    page,
+    limit,
+    pages: Math.ceil(orders.length / limit),
     orders,
   });
 });
