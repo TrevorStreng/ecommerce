@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import { Navbar } from "../components/Navbar";
@@ -16,6 +16,8 @@ export const Mens = () => {
   const [selectedCategory, setSelectedCategory] = useState<Set<string>>(
     new Set(["shirt", "pants"])
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const isFetching = useRef(false);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory((prev) => {
@@ -29,20 +31,39 @@ export const Mens = () => {
     });
   };
 
+  const getProducts = async (page: number) => {
+    if (isFetching.current) return; // Prevent duplicate calls
+    isFetching.current = true;
+
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3000/api/products?gender=male&limit=9&page=${page}`
+      );
+      setProducts((prevProducts) => [...prevProducts, ...data.products]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      isFetching.current = false;
+    }
+  };
+
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const { data } = await axios.get(
-          "http://localhost:3000/api/products?gender=male"
-        );
-        setProducts(data.products);
-        setFilteredProducts(data.products);
-      } catch (err) {
-        console.error(err);
+    const fetchMoreProducts = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight
+      ) {
+        setCurrentPage((prevPage) => prevPage + 1);
       }
     };
-    getProducts();
+
+    window.addEventListener("scroll", fetchMoreProducts);
+    return () => window.removeEventListener("scroll", fetchMoreProducts);
   }, []);
+
+  useEffect(() => {
+    getProducts(currentPage);
+  }, [currentPage]);
 
   // Filter products based on selectedCategory
   useEffect(() => {
