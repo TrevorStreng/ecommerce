@@ -23,16 +23,16 @@ export const Mens = () => {
     setSelectedCategory((prev) => {
       const newSelectedCategory = new Set(prev);
       if (newSelectedCategory.has(category)) {
-        newSelectedCategory.delete(category); // Unselect the category if already selected
+        newSelectedCategory.delete(category);
       } else {
-        newSelectedCategory.add(category); // Select the category if not selected
+        newSelectedCategory.add(category);
       }
       return newSelectedCategory;
     });
   };
 
   const getProducts = async (page: number) => {
-    if (isFetching.current) return; // Prevent duplicate calls
+    if (isFetching.current) return;
     isFetching.current = true;
 
     try {

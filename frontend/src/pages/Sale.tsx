@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Navbar } from "../components/Navbar";
 import { ProductCard } from "../components/productCard";
 import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
@@ -11,20 +11,39 @@ export const Sale = () => {
   const [selectedSort, setSelectedSort] = useState("featured");
   const [priceRange, setPriceRange] = useState([0, 100]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const isFetching = useRef(false);
 
+  const getProducts = async (page: number) => {
+    if (isFetching.current) return;
+    isFetching.current = true;
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3000/api/products?sale=true&limit=9&page=${page}`
+      );
+      setProducts((prevProducts) => [...prevProducts, ...data.products]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      isFetching.current = false;
+    }
+  };
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const data = await axios.get(
-          "http://localhost:3000/api/products?sale=true"
-        );
-        setProducts(data.data.products);
-      } catch (err) {
-        console.error(err);
+    const fetchMoreProducts = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight
+      ) {
+        setCurrentPage((prevPage) => prevPage + 1);
       }
     };
-    getProducts();
+
+    window.addEventListener("scroll", fetchMoreProducts);
+    return () => window.removeEventListener("scroll", fetchMoreProducts);
   }, []);
+  useEffect(() => {
+    getProducts(currentPage);
+  }, [currentPage]);
 
   return (
     <div className="w-full min-h-screen bg-white">

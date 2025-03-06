@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import { Navbar } from "../components/Navbar";
@@ -16,33 +16,52 @@ export const Womens = () => {
   const [selectedCategory, setSelectedCategory] = useState<Set<string>>(
     new Set(["shirt", "pants"])
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const isFetching = useRef(false);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory((prev) => {
       const newSelectedCategory = new Set(prev);
       if (newSelectedCategory.has(category)) {
-        newSelectedCategory.delete(category); // Unselect the category if already selected
+        newSelectedCategory.delete(category);
       } else {
-        newSelectedCategory.add(category); // Select the category if not selected
+        newSelectedCategory.add(category);
       }
       return newSelectedCategory;
     });
   };
 
+  const getProducts = async (page: number) => {
+    if (isFetching.current) return;
+    isFetching.current = true;
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3000/api/products?gender=female&limit=9&page=${page}`
+      );
+      setProducts((prevProducts) => [...prevProducts, ...data.products]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      isFetching.current = false;
+    }
+  };
+
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const { data } = await axios.get(
-          "http://localhost:3000/api/products?gender=female"
-        );
-        setProducts(data.products);
-        setFilteredProducts(data.products);
-      } catch (err) {
-        console.error(err);
+    const fetchMoreProducts = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight
+      ) {
+        setCurrentPage((prevPage) => prevPage + 1);
       }
     };
-    getProducts();
+
+    window.addEventListener("scroll", fetchMoreProducts);
+    return () => window.removeEventListener("scroll", fetchMoreProducts);
   }, []);
+  useEffect(() => {
+    getProducts(currentPage);
+  }, [currentPage]);
 
   // Filter products based on selectedCategory
   useEffect(() => {
