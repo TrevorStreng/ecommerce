@@ -24,6 +24,8 @@ describe("GET /api/products?minPrice=2", () => {
   });
 });
 
+desrcibe("GET /api/products?");
+
 afterEach(async () => {
   await mongoose.connection.close();
 });
